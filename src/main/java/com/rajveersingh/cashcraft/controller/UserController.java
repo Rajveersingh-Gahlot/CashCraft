@@ -3,6 +3,8 @@ package com.rajveersingh.cashcraft.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rajveersingh.cashcraft.dto.LoginRequest;
+import com.rajveersingh.cashcraft.dto.LoginResponse;
 import com.rajveersingh.cashcraft.dto.RegisterRequest;
 import com.rajveersingh.cashcraft.dto.UserResponse;
 import com.rajveersingh.cashcraft.service.UserService;
@@ -24,6 +26,11 @@ public class UserController {
     @PostMapping("/register")
     public UserResponse register(@Valid @RequestBody RegisterRequest registerRequest) {
         return userService.register(registerRequest);
+    }
+
+    @PostMapping ("/login")
+    public LoginResponse login(@Valid @RequestBody LoginRequest loginRequest){
+        return userService.login(loginRequest);
     }
 
 }
