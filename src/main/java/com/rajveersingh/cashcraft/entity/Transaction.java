@@ -1,6 +1,7 @@
 package com.rajveersingh.cashcraft.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -34,7 +35,7 @@ public class Transaction {
     @Column(nullable = false)
     private BigDecimal amount;
 
-    @Enumerated (EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TransactionType transactionType;
 
@@ -47,11 +48,14 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    
+
+    @Column(nullable = false)
+    private LocalDate transactionDate;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    public enum TransactionType{
+    public enum TransactionType {
         INCOME,
         EXPENSE
     }
