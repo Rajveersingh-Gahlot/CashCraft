@@ -9,6 +9,8 @@ import com.rajveersingh.cashcraft.dto.LoginResponse;
 import com.rajveersingh.cashcraft.dto.RegisterRequest;
 import com.rajveersingh.cashcraft.dto.UserResponse;
 import com.rajveersingh.cashcraft.entity.User;
+import com.rajveersingh.cashcraft.exception.EmailAlreadyExistsException;
+import com.rajveersingh.cashcraft.exception.InvalidCredentialsException;
 import com.rajveersingh.cashcraft.repository.UserRepository;
 import com.rajveersingh.cashcraft.security.JwtService;
 
@@ -28,7 +30,7 @@ public class UserService {
     public UserResponse register(RegisterRequest request) {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email is already registered");
+            throw new EmailAlreadyExistsException("Email is already registered");
         }
 
         User user = new User();
@@ -50,10 +52,10 @@ public class UserService {
     public LoginResponse login(LoginRequest loginRequest) {
 
         User user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Invali email or password"));
+                .orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("Invalis email or password");
+            throw new InvalidCredentialsException("Invalid email or password");
         }
 
         String token = jwtService.generateToken(user.getId());
