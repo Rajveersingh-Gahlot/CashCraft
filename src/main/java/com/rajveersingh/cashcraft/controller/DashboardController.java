@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rajveersingh.cashcraft.dto.CategorySummaryResponse;
 import com.rajveersingh.cashcraft.dto.DashboardResponse;
+import com.rajveersingh.cashcraft.dto.MonthlySummaryResponse;
 import com.rajveersingh.cashcraft.entity.Transaction.TransactionType;
 import com.rajveersingh.cashcraft.service.DashboardService;
 
@@ -35,6 +36,12 @@ public class DashboardController {
     @ResponseStatus(HttpStatus.OK)
     public List<CategorySummaryResponse> getCategory(@RequestParam("type") TransactionType transactionType) {
         return service.getCategorySummary(transactionType);
+    }
+
+    @GetMapping("/monthly")
+    @ResponseStatus(HttpStatus.OK)
+    public List<MonthlySummaryResponse> getMonthlySummary() {
+        return service.getMonthlySummary();
     }
 
 }

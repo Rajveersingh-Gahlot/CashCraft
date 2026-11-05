@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.rajveersingh.cashcraft.dto.CategorySummaryResponse;
 import com.rajveersingh.cashcraft.dto.DashboardResponse;
+import com.rajveersingh.cashcraft.dto.MonthlySummaryResponse;
 import com.rajveersingh.cashcraft.entity.Transaction.TransactionType;
 import com.rajveersingh.cashcraft.repository.TransactionRepository;
 
@@ -59,5 +60,12 @@ public class DashboardService {
         UUID userId = getAuthenticatedUserId();
 
         return transactionRepository.findCategorySummary(userId, transactionType);
+    }
+
+    public List<MonthlySummaryResponse>getMonthlySummary(){
+
+        UUID userId = getAuthenticatedUserId();
+
+        return transactionRepository.findMonthlySummary(userId,TransactionType.INCOME,TransactionType.EXPENSE);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.rajveersingh.cashcraft.dto.CategorySummaryResponse;
+import com.rajveersingh.cashcraft.dto.MonthlySummaryResponse;
 import com.rajveersingh.cashcraft.entity.Transaction;
 import com.rajveersingh.cashcraft.entity.Transaction.TransactionType;
 
@@ -40,4 +41,20 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
 
     List<CategorySummaryResponse> findCategorySummary(@Param("userId") UUID userId,
             @Param("transactionType") TransactionType transactionType);
+
+    @Query("""
+            SELECT new com.rajveersingh.cashcraft.dto.MonthlySummaryResponse(
+                CAST(FUNCTION('TO_CHAR', t.transactionDate, 'YYYY-MM') AS String),
+                SUM(CASE WHEN t.transactionType = :incomeType THEN t.amount ELSE 0 END),
+                SUM(CASE WHEN t.transactionType = :expenseType THEN t.amount ELSE 0 END)
+            )
+            FROM Transaction t
+            WHERE t.user.id = :userId
+            GROUP BY FUNCTION('TO_CHAR', t.transactionDate, 'YYYY-MM')
+            ORDER BY FUNCTION('TO_CHAR', t.transactionDate, 'YYYY-MM')
+            """)
+    List<MonthlySummaryResponse> findMonthlySummary(
+            @Param("userId") UUID userId,
+            @Param("incomeType") TransactionType incomeType,
+            @Param("expenseType") TransactionType expenseType);
 }
