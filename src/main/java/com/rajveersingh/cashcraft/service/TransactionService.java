@@ -11,6 +11,7 @@ import com.rajveersingh.cashcraft.dto.TransactionResponse;
 import com.rajveersingh.cashcraft.dto.UpdateTransactionRequest;
 import com.rajveersingh.cashcraft.entity.Transaction;
 import com.rajveersingh.cashcraft.entity.User;
+import com.rajveersingh.cashcraft.exception.ResourceNotFoundException;
 import com.rajveersingh.cashcraft.repository.TransactionRepository;
 import com.rajveersingh.cashcraft.repository.UserRepository;
 
@@ -33,7 +34,7 @@ public class TransactionService {
         UUID userUUID = UUID.fromString(userId);
 
         User user = userRepository.findById(userUUID)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Transaction transaction = new Transaction();
 
@@ -66,7 +67,7 @@ public class TransactionService {
 
         Transaction transaction = transactionRepository
                 .findByIdAndUserId(transactionId, userUUID)
-                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Transaction not found"));
 
         return mapToResponse(transaction);
     }
@@ -76,7 +77,7 @@ public class TransactionService {
 
         Transaction transaction = transactionRepository
                 .findByIdAndUserId(transactionId, userUUID)
-                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Transaction not found"));
 
         transaction.setAmount(request.getAmount());
         transaction.setTransactionType(request.getTransactionType());
@@ -90,10 +91,10 @@ public class TransactionService {
     }
 
     public void deleteTransaction(UUID transactionId) {
-        UUID userUUId = getAuthenticatedUserId();
+        UUID userUUID = getAuthenticatedUserId();
 
-        Transaction transaction = transactionRepository.findByIdAndUserId(transactionId, userUUId)
-                .orElseThrow(() -> new RuntimeException("Tranasaction not found"));
+        Transaction transaction = transactionRepository.findByIdAndUserId(transactionId, userUUID)
+                .orElseThrow(() -> new ResourceNotFoundException("Transaction not found"));
 
         transactionRepository.delete(transaction);
     }
@@ -122,5 +123,4 @@ public class TransactionService {
 
         return response;
     }
-
 }
