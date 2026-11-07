@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/public/Login";
 import MainLayout from "./layouts/MainLayout";
+import Register from "./pages/public/Register";
 
 function DashboardPage() {
   return (
@@ -34,6 +35,7 @@ function App() {
       <Routes>
         {/* Public route */}
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Shared application layout */}
         <Route element={<MainLayout />}>
