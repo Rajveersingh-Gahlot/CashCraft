@@ -1,0 +1,87 @@
+
+import { useState } from "react";
+import "./Login.css";
+
+function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    console.log("Login form submitted:", {
+      email,
+      password,
+    });
+  }
+
+  return (
+    <div className="login-page">
+      <div className="login-card">
+        <div className="login-brand">
+          <div className="login-brand-logo">C</div>
+          <span>CashCraft</span>
+        </div>
+
+        <div className="login-heading">
+          <h1>Welcome back</h1>
+          <p>Sign in to continue managing your finances.</p>
+        </div>
+
+        <form className="login-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">Email address</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <div className="password-label-row">
+              <label htmlFor="password">Password</label>
+              <a href="#forgot-password">Forgot password?</a>
+            </div>
+
+            <div className="password-input-wrapper">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                required
+              />
+
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" className="login-submit">
+            Sign in
+          </button>
+        </form>
+
+        <div className="login-footer">
+          <p>
+            Don't have an account? <a href="/register">Create account</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Login;
