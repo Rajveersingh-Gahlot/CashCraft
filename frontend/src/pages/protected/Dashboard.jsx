@@ -1,5 +1,7 @@
 import CategoryBreakdown from "../../components/dashboard/CategoryBreakdown";
 import IncomeExpenseChart from "../../components/dashboard/IncomeExpenseChart";
+import MonthlyTrend from "../../components/dashboard/MonthlyTrend";
+import RecentTransactions from "../../components/dashboard/RecentTransactions";
 import SummaryCards from "../../components/dashboard/SummaryCards";
 import "./Dashboard.css";
 
@@ -49,11 +51,7 @@ function Dashboard() {
             <p>Track how your finances change over time.</p>
           </div>
         </div>
-
-        <div className="dashboard-placeholder trend-placeholder">
-          <h4>Monthly Income & Expenses</h4>
-          <p>Monthly trend chart will appear here.</p>
-        </div>
+        <MonthlyTrend />
       </section>
 
       {/* Recent transactions */}
@@ -65,9 +63,7 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="dashboard-placeholder transactions-placeholder">
-          <p>Recent transactions will appear here.</p>
-        </div>
+        <RecentTransactions />
       </section>
     </div>
   );

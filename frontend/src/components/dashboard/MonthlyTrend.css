@@ -1,0 +1,59 @@
+.monthly-trend {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+  padding: 24px;
+  background: linear-gradient(145deg, var(--bg-secondary), #111b30);
+  border: 1px solid rgba(100, 116, 139, 0.22);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.16);
+}
+
+.monthly-trend-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.monthly-trend-header h4 {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 650;
+  margin: 0 0 7px;
+}
+
+.monthly-trend-header p {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+.trend-period {
+  flex-shrink: 0;
+  padding: 7px 11px;
+  color: #67e8f9;
+  background: rgba(34, 211, 238, 0.1);
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.monthly-trend-chart {
+  width: 100%;
+  height: 310px;
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  .monthly-trend {
+    padding: 18px;
+  }
+
+  .monthly-trend-chart {
+    height: 260px;
+  }
+}
