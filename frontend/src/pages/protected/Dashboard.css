@@ -1,0 +1,174 @@
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+}
+
+/* Dashboard introduction */
+.dashboard-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.dashboard-eyebrow {
+  display: inline-block;
+  color: var(--accent-cyan);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  margin-bottom: 10px;
+}
+
+.dashboard-intro h2 {
+  color: var(--text-primary);
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.dashboard-intro p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 0;
+}
+
+.dashboard-date {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 14px 18px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.dashboard-date span {
+  color: var(--text-muted);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.dashboard-date strong {
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+/* Common section styles */
+.dashboard-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section-heading h3 {
+  color: var(--text-primary);
+  font-size: 17px;
+  font-weight: 650;
+  margin: 0 0 5px;
+}
+
+.section-heading p {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin: 0;
+}
+
+/* Summary cards layout */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* Analysis layout */
+.analysis-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 16px;
+}
+
+/* Temporary dashboard section containers */
+.dashboard-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 22px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}
+
+.dashboard-placeholder span {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.dashboard-placeholder strong {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.dashboard-placeholder h4 {
+  color: var(--text-primary);
+  font-size: 15px;
+  margin: 0;
+}
+
+.dashboard-placeholder p {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin: 0;
+}
+
+.chart-placeholder {
+  min-height: 260px;
+}
+
+.trend-placeholder {
+  min-height: 230px;
+}
+
+.transactions-placeholder {
+  min-height: 130px;
+}
+
+/* Responsive layout */
+@media (max-width: 900px) {
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .analysis-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard {
+    gap: 26px;
+  }
+
+  .dashboard-intro {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .dashboard-intro h2 {
+    font-size: 23px;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-placeholder {
+    padding: 18px;
+  }
+}

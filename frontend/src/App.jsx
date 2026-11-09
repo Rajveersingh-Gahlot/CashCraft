@@ -2,19 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/public/Login";
 import MainLayout from "./layouts/MainLayout";
 import Register from "./pages/public/Register";
-
-function DashboardPage() {
-  return (
-    <div className="welcome-card">
-      <span className="welcome-label">CASHCRAFT</span>
-      <h2>Welcome to your financial dashboard.</h2>
-      <p>
-        Your financial overview starts here. We will build your summary cards,
-        charts and insights in the dashboard step.
-      </p>
-    </div>
-  );
-}
+import Dashboard from "./pages/protected/Dashboard";
 
 function TransactionsPage() {
   return (
@@ -39,7 +27,7 @@ function App() {
 
         {/* Shared application layout */}
         <Route element={<MainLayout />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/dashboard" element={<Dashboard/>} />
           <Route path="/transactions" element={<TransactionsPage />} />
         </Route>
 

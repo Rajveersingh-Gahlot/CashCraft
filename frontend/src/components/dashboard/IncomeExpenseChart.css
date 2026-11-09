@@ -1,0 +1,40 @@
+
+.income-expense-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+  padding: 22px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}
+
+.income-expense-chart-header h4 {
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 650;
+  margin: 0 0 6px;
+}
+
+.income-expense-chart-header p {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin: 0;
+}
+
+.chart-container {
+  width: 100%;
+  height: 280px;
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  .income-expense-chart {
+    padding: 18px;
+  }
+
+  .chart-container {
+    height: 250px;
+  }
+}
