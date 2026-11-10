@@ -1,0 +1,139 @@
+.delete-confirmation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(3, 8, 20, 0.8);
+  backdrop-filter: blur(7px);
+}
+
+.delete-confirmation-modal {
+  width: 100%;
+  max-width: 430px;
+  padding: 28px;
+  border: 1px solid #39465e;
+  border-radius: 16px;
+  background: #111c30;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+}
+
+.delete-warning-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(244, 80, 100, 0.3);
+  border-radius: 12px;
+  background: rgba(244, 80, 100, 0.12);
+  color: #ff6479;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.delete-confirmation-content h2 {
+  margin: 0 0 9px;
+  color: #f1f5fb;
+  font-size: 21px;
+}
+
+.delete-confirmation-content > p {
+  margin: 0;
+  color: #91a0b8;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.delete-transaction-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 23px;
+  padding: 17px;
+  border: 1px solid #2b3b54;
+  border-radius: 10px;
+  background: #0b1425;
+}
+
+.delete-transaction-details > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.delete-transaction-details span {
+  color: #91a0b8;
+  font-size: 12px;
+}
+
+.delete-transaction-details strong {
+  color: #eaf1fa;
+  font-size: 13px;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.delete-transaction-details .delete-amount.income {
+  color: #36d69a;
+}
+
+.delete-transaction-details .delete-amount.expense {
+  color: #ff6479;
+}
+
+.delete-confirmation-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.delete-confirmation-actions button {
+  padding: 11px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.delete-cancel-btn {
+  border: 1px solid #394b65;
+  background: transparent;
+  color: #c6d2e2;
+}
+
+.delete-cancel-btn:hover {
+  background: #1b2a42;
+}
+
+.delete-confirm-btn {
+  border: 1px solid #e34e68;
+  background: #d9435e;
+  color: #ffffff;
+}
+
+.delete-confirm-btn:hover {
+  background: #ef526d;
+}
+
+@media (max-width: 450px) {
+  .delete-confirmation-modal {
+    padding: 22px;
+  }
+
+  .delete-confirmation-actions {
+    flex-direction: column-reverse;
+  }
+
+  .delete-confirmation-actions button {
+    width: 100%;
+  }
+}

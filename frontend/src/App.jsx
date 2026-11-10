@@ -3,19 +3,7 @@ import Login from "./pages/public/Login";
 import MainLayout from "./layouts/MainLayout";
 import Register from "./pages/public/Register";
 import Dashboard from "./pages/protected/Dashboard";
-
-function TransactionsPage() {
-  return (
-    <div className="welcome-card">
-      <span className="welcome-label">CASHCRAFT</span>
-      <h2>Your transactions will appear here.</h2>
-      <p>
-        We will build transaction history, filters and transaction management in
-        the transactions step.
-      </p>
-    </div>
-  );
-}
+import Transactions from "./pages/protected/Transactions";
 
 function App() {
   return (
@@ -27,8 +15,8 @@ function App() {
 
         {/* Shared application layout */}
         <Route element={<MainLayout />}>
-          <Route path="/dashboard" element={<Dashboard/>} />
-          <Route path="/transactions" element={<TransactionsPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/transactions" element={<Transactions />} />
         </Route>
 
         {/* Default and unknown routes */}

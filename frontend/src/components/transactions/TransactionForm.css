@@ -1,0 +1,162 @@
+.transaction-form-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(3, 8, 20, 0.78);
+  backdrop-filter: blur(7px);
+}
+
+.transaction-form-modal {
+  width: 100%;
+  max-width: 540px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #111c30;
+  border: 1px solid #30415c;
+  border-radius: 16px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+}
+
+.transaction-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 25px;
+  border-bottom: 1px solid #26364f;
+}
+
+.form-eyebrow {
+  color: #35d5ed;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.transaction-form-header h2 {
+  margin: 9px 0 6px;
+  color: #f1f5fb;
+  font-size: 22px;
+}
+
+.transaction-form-header p {
+  margin: 0;
+  color: #91a0b8;
+  font-size: 13px;
+}
+
+.form-close-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: #1b2a42;
+  color: #b9c6d8;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.form-close-btn:hover {
+  background: #293b56;
+  color: #ffffff;
+}
+
+.transaction-form-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 25px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.form-field label {
+  color: #c6d2e2;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 12px 13px;
+  border: 1px solid #30415c;
+  border-radius: 8px;
+  outline: none;
+  background: #0b1425;
+  color: #eaf1fa;
+  font: inherit;
+  font-size: 13px;
+  color-scheme: dark;
+}
+
+.form-field input::placeholder {
+  color: #687991;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: #35d5ed;
+  box-shadow: 0 0 0 3px rgba(53, 213, 237, 0.1);
+}
+
+.transaction-form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 18px 25px;
+  border-top: 1px solid #26364f;
+}
+
+.transaction-form-footer button {
+  padding: 11px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form-cancel-btn {
+  border: 1px solid #394b65;
+  background: transparent;
+  color: #c6d2e2;
+}
+
+.form-cancel-btn:hover {
+  background: #1b2a42;
+}
+
+.form-submit-btn {
+  border: 1px solid #24bcd5;
+  background: linear-gradient(135deg, #19b9d2, #477de8);
+  color: #ffffff;
+}
+
+.form-submit-btn:hover {
+  filter: brightness(1.1);
+}
+
+@media (max-width: 550px) {
+  .transaction-form-body {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .transaction-form-header {
+    padding: 20px;
+  }
+
+  .transaction-form-footer {
+    padding: 16px 20px;
+  }
+}
