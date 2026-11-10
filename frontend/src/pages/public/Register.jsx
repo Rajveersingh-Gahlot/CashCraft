@@ -1,7 +1,12 @@
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../../services/authService";
 import { useState } from "react";
 import "./Register.css";
 
 function Register() {
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -10,15 +15,39 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    if (password != confirmPassword) {
-      alert("Password do not match.");
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
       return;
     }
 
-    console.log("Registration form is ready.");
+    setIsSubmitting(true);
+
+    try {
+      const userData = {
+        name,
+        email,
+        password,
+      };
+
+      const response = await registerUser(userData);
+
+      console.log("Registration successful:", response);
+
+      alert("Account created successfully! Please log in.");
+
+      navigate("/login");
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        "Registration failed. Please try again.";
+
+      alert(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -66,6 +95,7 @@ function Register() {
               <input
                 id="password"
                 type={showPassword ? "text" : "password"}
+                minLength={6}
                 placeholder="Create a password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
@@ -109,17 +139,29 @@ function Register() {
             </div>
           </div>
 
-          <button type="submit" className="register-submit">
-            Create account
+          <button
+            type="submit"
+            className="register-submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Creating account..." : "Create account"}
           </button>
         </form>
 
         <div className="register-footer">
           <p>
-            Already have an account ? <a href="/login">Sign in</a>
+            Already have an account ?{" "}
+            <a
+              href="/login"
+              onClick={(event) => {
+                event.preventDefault();
+                navigate("/login");
+              }}
+            >
+              Sign in
+            </a>
           </p>
         </div>
-
       </div>
     </div>
   );
