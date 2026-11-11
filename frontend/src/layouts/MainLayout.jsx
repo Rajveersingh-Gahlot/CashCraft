@@ -25,9 +25,20 @@ function MainLayout() {
     navigate(`/${page}`);
   }
 
+  function handleLogout() {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+
+    navigate("/login", { replace: true });
+  }
+
   return (
     <div className="app-layout">
-      <Sidebar activePage={activePage} onNavigate={handleNavigate} />
+      <Sidebar
+        activePage={activePage}
+        onNavigate={handleNavigate}
+        onLogout={handleLogout}
+      />
 
       <main className="app-main">
         <header className="app-header">

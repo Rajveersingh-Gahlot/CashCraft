@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./Sidebar.css";
 
-function Sidebar({ activePage, onNavigate }) {
+function Sidebar({ activePage, onNavigate, onLogout }) {
   const [isCollapsed, setCollapsed] = useState(false);
 
   const navigationItems = [
@@ -34,7 +34,7 @@ function Sidebar({ activePage, onNavigate }) {
   }
 
   return (
-    <aside className={`sidebar ${isCollapsed ? `sidebar-collapsed` : ""}`}>
+    <aside className={`sidebar ${isCollapsed ? "sidebar-collapsed" : ""}`}>
       <div className="sidebar-brand">
         <div className="brand-logo">C</div>
 
@@ -58,7 +58,9 @@ function Sidebar({ activePage, onNavigate }) {
         {navigationItems.map((item) => (
           <button
             key={item.id}
-            className={`nav-item ${activePage === item.id ? "nav-item-active" : ""}`}
+            className={`nav-item ${
+              activePage === item.id ? "nav-item-active" : ""
+            }`}
             onClick={() => handleNavigation(item.id)}
             title={isCollapsed ? item.label : ""}
           >
@@ -76,6 +78,22 @@ function Sidebar({ activePage, onNavigate }) {
             <span>Personal Finance</span>
           </div>
         )}
+
+        <button
+          className="logout-button"
+          onClick={onLogout}
+          title={isCollapsed ? "Logout" : ""}
+        >
+          <span className="logout-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M10 17l5-5-5-5" />
+              <path d="M15 12H3" />
+              <path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6" />
+            </svg>
+          </span>
+
+          {!isCollapsed && <span>Logout</span>}
+        </button>
       </div>
     </aside>
   );
