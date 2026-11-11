@@ -1,5 +1,5 @@
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 function Login() {
@@ -7,13 +7,50 @@ function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  function handleSubmit(event) {
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    console.log("Login form submitted:", {
-      email,
-      password,
-    });
+    setIsSubmitting(true);
+
+    try {
+      const credentials = {
+        email,
+        password,
+      };
+
+      const response = await loginUser(credentials);
+
+      sessionStorage.setItem("token", response.token);
+
+      sessionStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: response.id,
+          name: response.name,
+          email: response.email,
+        }),
+      );
+
+      console.log("Login successful:", {
+        id: response.id,
+        name: response.name,
+        email: response.email,
+      });
+
+      alert("Login successful!");
+      navigate("/dashboard");
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        "Login failed. Please check your credentials.";
+
+      alert(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -69,8 +106,12 @@ function Login() {
             </div>
           </div>
 
-          <button type="submit" className="login-submit">
-            Sign in
+          <button
+            type="submit"
+            className="login-submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
