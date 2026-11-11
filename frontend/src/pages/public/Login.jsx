@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
+import { loginUser } from "../../services/authService";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -23,8 +24,10 @@ function Login() {
 
       const response = await loginUser(credentials);
 
+      // Store JWT token for authenticated API requests
       sessionStorage.setItem("token", response.token);
 
+      // Store logged-in user information
       sessionStorage.setItem(
         "user",
         JSON.stringify({
@@ -41,7 +44,9 @@ function Login() {
       });
 
       alert("Login successful!");
-      navigate("/dashboard");
+
+      // Replace Login history entry with Dashboard
+      navigate("/dashboard", { replace: true });
     } catch (error) {
       const message =
         error.response?.data?.message ||
@@ -69,6 +74,7 @@ function Login() {
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="email">Email address</label>
+
             <input
               id="email"
               type="email"
@@ -82,7 +88,6 @@ function Login() {
           <div className="form-group">
             <div className="password-label-row">
               <label htmlFor="password">Password</label>
-              <a href="#forgot-password">Forgot password?</a>
             </div>
 
             <div className="password-input-wrapper">
@@ -117,7 +122,7 @@ function Login() {
 
         <div className="login-footer">
           <p>
-            Don't have an account? <a href="/register">Create account</a>
+            Don't have an account? <Link to="/register">Create account</Link>
           </p>
         </div>
       </div>

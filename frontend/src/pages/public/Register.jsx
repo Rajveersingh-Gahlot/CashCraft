@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../../services/authService";
 import { useState } from "react";
 import "./Register.css";
@@ -38,7 +38,7 @@ function Register() {
 
       alert("Account created successfully! Please log in.");
 
-      navigate("/login");
+      navigate("/login", { replace: true });
     } catch (error) {
       const message =
         error.response?.data?.message ||
@@ -150,16 +150,7 @@ function Register() {
 
         <div className="register-footer">
           <p>
-            Already have an account ?{" "}
-            <a
-              href="/login"
-              onClick={(event) => {
-                event.preventDefault();
-                navigate("/login");
-              }}
-            >
-              Sign in
-            </a>
+            Already have an account? <Link to="/login">Sign in</Link>
           </p>
         </div>
       </div>
