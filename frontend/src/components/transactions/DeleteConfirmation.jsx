@@ -6,10 +6,19 @@ const currencyFormatter = new Intl.NumberFormat("en-IN", {
   maximumFractionDigits: 2,
 });
 
-function DeleteConfirmation({ transaction, onConfirm, onCancel }) {
+function DeleteConfirmation({
+  transaction,
+  onConfirm,
+  onCancel,
+  isDeleting,
+  error,
+}) {
   if (!transaction) {
     return null;
   }
+
+  const transactionType = transaction.transactionType.toLowerCase();
+
   return (
     <div className="delete-confirmation-overlay">
       <div
@@ -42,12 +51,14 @@ function DeleteConfirmation({ transaction, onConfirm, onCancel }) {
 
             <div>
               <span>Amount</span>
-              <strong className={`delete-amount ${transaction.type}`}>
-                {transaction.type === "expense" ? "-" : "+"}
+              <strong className={`delete-amount ${transactionType}`}>
+                {transaction.transactionType === "EXPENSE" ? "-" : "+"}
                 {currencyFormatter.format(transaction.amount)}
               </strong>
             </div>
           </div>
+
+          {error && <p className="form-error">{error}</p>}
         </div>
 
         <div className="delete-confirmation-actions">
@@ -55,6 +66,7 @@ function DeleteConfirmation({ transaction, onConfirm, onCancel }) {
             type="button"
             className="delete-cancel-btn"
             onClick={onCancel}
+            disabled={isDeleting}
           >
             Cancel
           </button>
@@ -63,8 +75,9 @@ function DeleteConfirmation({ transaction, onConfirm, onCancel }) {
             type="button"
             className="delete-confirm-btn"
             onClick={onConfirm}
+            disabled={isDeleting}
           >
-            Delete Transaction
+            {isDeleting ? "Deleting..." : "Delete Transaction"}
           </button>
         </div>
       </div>

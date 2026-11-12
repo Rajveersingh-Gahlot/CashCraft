@@ -23,20 +23,26 @@ const categories = {
   ],
 };
 
-function TransactionForm({ initialData, onSubmit, onCancel }) {
-  const [formData, setFormData] = useState(initialFormData);
+function TransactionForm({
+  initialData,
+  onSubmit,
+  onCancel,
+  isSubmitting,
+  error,
+}) {
+  const [formData, setFormData] = useState({ ...initialFormData });
 
   useEffect(() => {
     if (initialData) {
       setFormData({
         amount: initialData.amount,
         description: initialData.description,
-        type: initialData.type,
+        type: initialData.transactionType.toLowerCase(),
         category: initialData.category,
-        date: initialData.date,
+        date: initialData.transactionDate,
       });
     } else {
-      setFormData(initialFormData);
+      setFormData({ ...initialFormData });
     }
   }, [initialData]);
 
@@ -80,6 +86,7 @@ function TransactionForm({ initialData, onSubmit, onCancel }) {
             className="form-close-btn"
             onClick={onCancel}
             aria-label="Close form"
+            disabled={isSubmitting}
           >
             ×
           </button>
@@ -146,6 +153,7 @@ function TransactionForm({ initialData, onSubmit, onCancel }) {
                 ))}
               </select>
             </div>
+
             <div className="form-field">
               <label htmlFor="date">Transaction Date</label>
               <input
@@ -157,6 +165,8 @@ function TransactionForm({ initialData, onSubmit, onCancel }) {
                 required
               />
             </div>
+
+            {error && <p className="form-error">{error}</p>}
           </div>
 
           <div className="transaction-form-footer">
@@ -164,12 +174,21 @@ function TransactionForm({ initialData, onSubmit, onCancel }) {
               type="button"
               className="form-cancel-btn"
               onClick={onCancel}
+              disabled={isSubmitting}
             >
               Cancel
             </button>
 
-            <button type="submit" className="form-submit-btn">
-              {initialData ? "Save Changes" : "Add Transaction"}
+            <button
+              type="submit"
+              className="form-submit-btn"
+              disabled={isSubmitting}
+            >
+              {isSubmitting
+                ? "Saving..."
+                : initialData
+                  ? "Save Changes"
+                  : "Add Transaction"}
             </button>
           </div>
         </form>

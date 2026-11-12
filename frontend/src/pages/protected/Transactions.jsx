@@ -1,8 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TransactionFilters from "../../components/transactions/TransactionFilters";
 import TransactionTable from "../../components/transactions/TransactionTable";
 import TransactionForm from "../../components/transactions/TransactionForm";
 import DeleteConfirmation from "../../components/transactions/DeleteConfirmation";
+import {
+  getAllTransactions,
+  createTransaction,
+  updateTransaction,
+  deleteTransaction,
+} from "../../services/transactionService";
 import "./Transactions.css";
 
 const initialFilters = {
@@ -13,70 +19,44 @@ const initialFilters = {
   endDate: "",
 };
 
-const sampleTransactions = [
-  {
-    id: 1,
-    description: "Monthly Salary",
-    category: "Salary",
-    date: "2026-11-01",
-    type: "income",
-    amount: 50000,
-  },
-  {
-    id: 2,
-    description: "Grocery Shopping",
-    category: "Food",
-    date: "2026-11-03",
-    type: "expense",
-    amount: 2500,
-  },
-  {
-    id: 3,
-    description: "Freelance Project",
-    category: "Freelance",
-    date: "2026-11-04",
-    type: "income",
-    amount: 12000,
-  },
-  {
-    id: 4,
-    description: "Cab Booking",
-    category: "Transport",
-    date: "2026-11-06",
-    type: "expense",
-    amount: 450,
-  },
-  {
-    id: 5,
-    description: "Electricity Bill",
-    category: "Bills",
-    date: "2026-11-08",
-    type: "expense",
-    amount: 1800,
-  },
-  {
-    id: 6,
-    description: "Shopping",
-    category: "Shopping",
-    date: "2026-11-09",
-    type: "expense",
-    amount: 3200,
-  },
-];
-
 function Transactions() {
-  const [transactions, setTransactions] = useState(sampleTransactions);
+  const [transactions, setTransactions] = useState([]);
+  const [filters, setFilters] = useState({ ...initialFilters });
 
-  const [filters, setFilters] = useState(initialFilters);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const [isFormOpen, setIsFormOpen] = useState(false);
-
   const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState("");
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+
+  // FETCH TRANSACTIONS FROM BACKEND
+  useEffect(() => {
+    async function fetchTransactions() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const data = await getAllTransactions();
+
+        setTransactions(data);
+      } catch (err) {
+        console.error("Failed to fetch transactions:", err);
+        setError("Unable to load transactions. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchTransactions();
+  }, []);
 
   // FILTER HANDLERS
-
   function handleFilterChange(field, value) {
     setFilters((previousFilters) => ({
       ...previousFilters,
@@ -85,113 +65,163 @@ function Transactions() {
   }
 
   function handleClearFilters() {
-    setFilters(initialFilters);
+    setFilters({ ...initialFilters });
   }
 
   // ADD TRANSACTION
-
   function handleAddTransaction() {
     setSelectedTransaction(null);
+    setFormError("");
     setIsFormOpen(true);
   }
 
   // EDIT TRANSACTION
-
   function handleEditTransaction(transaction) {
     setSelectedTransaction(transaction);
+    setFormError("");
     setIsFormOpen(true);
   }
 
   // CLOSE ADD / EDIT FORM
-
   function handleCloseForm() {
-    setIsFormOpen(false);
-    setSelectedTransaction(null);
-  }
-
-  // SAVE TRANSACTION
-
-  function handleSaveTransaction(formData) {
-    if (selectedTransaction) {
-      setTransactions((previousTransactions) =>
-        previousTransactions.map((transaction) =>
-          transaction.id === selectedTransaction.id
-            ? { ...transaction, ...formData }
-            : transaction,
-        ),
-      );
-    } else {
-      const newTransaction = {
-        id: Date.now(),
-        ...formData,
-      };
-
-      setTransactions((previousTransactions) => [
-        newTransaction,
-        ...previousTransactions,
-      ]);
+    if (isSubmitting) {
+      return;
     }
 
-    handleCloseForm();
+    setIsFormOpen(false);
+    setSelectedTransaction(null);
+    setFormError("");
+  }
+
+  // CREATE OR UPDATE TRANSACTION
+  async function handleSaveTransaction(formData) {
+    const transactionData = {
+      amount: formData.amount,
+      description: formData.description,
+      transactionType: formData.type.toUpperCase(),
+      category: formData.category,
+      transactionDate: formData.date,
+    };
+
+    try {
+      setIsSubmitting(true);
+      setFormError("");
+
+      if (selectedTransaction) {
+        const updatedTransaction = await updateTransaction(
+          selectedTransaction.id,
+          transactionData,
+        );
+
+        setTransactions((previousTransactions) =>
+          previousTransactions.map((transaction) =>
+            transaction.id === updatedTransaction.id
+              ? updatedTransaction
+              : transaction,
+          ),
+        );
+      } else {
+        const createdTransaction = await createTransaction(transactionData);
+
+        setTransactions((previousTransactions) => [
+          createdTransaction,
+          ...previousTransactions,
+        ]);
+      }
+
+      setIsFormOpen(false);
+      setSelectedTransaction(null);
+    } catch (err) {
+      console.error("Failed to save transaction:", err);
+
+      setFormError(
+        err.response?.data?.message ||
+          "Unable to save transaction. Please try again.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   // OPEN DELETE CONFIRMATION
-
   function handleDeleteTransaction(transaction) {
     setSelectedTransaction(transaction);
+    setDeleteError("");
     setIsDeleteDialogOpen(true);
   }
 
   // CANCEL DELETE
-
   function handleCancelDelete() {
+    if (isDeleting) {
+      return;
+    }
+
     setIsDeleteDialogOpen(false);
     setSelectedTransaction(null);
+    setDeleteError("");
   }
 
-  // CONFIRM DELETE
-
-  function handleConfirmDelete() {
+  // DELETE TRANSACTION FROM BACKEND
+  async function handleConfirmDelete() {
     if (!selectedTransaction) {
       return;
     }
 
-    setTransactions((previousTransactions) =>
-      previousTransactions.filter(
-        (transaction) => transaction.id !== selectedTransaction.id,
-      ),
-    );
+    try {
+      setIsDeleting(true);
+      setDeleteError("");
 
-    handleCancelDelete();
+      await deleteTransaction(selectedTransaction.id);
+
+      setTransactions((previousTransactions) =>
+        previousTransactions.filter(
+          (transaction) => transaction.id !== selectedTransaction.id,
+        ),
+      );
+
+      setIsDeleteDialogOpen(false);
+      setSelectedTransaction(null);
+    } catch (err) {
+      console.error("Failed to delete transaction:", err);
+
+      setDeleteError(
+        err.response?.data?.message ||
+          "Unable to delete transaction. Please try again.",
+      );
+    } finally {
+      setIsDeleting(false);
+    }
   }
 
-  // FILTER TRANSACTIONS
+  // FILTER AND SORT TRANSACTIONS
+  const filteredTransactions = transactions
+    .filter((transaction) => {
+      const matchesSearch = transaction.description
+        .toLowerCase()
+        .includes(filters.search.trim().toLowerCase());
 
-  const filteredTransactions = transactions.filter((transaction) => {
-    const matchesSearch = transaction.description
-      .toLowerCase()
-      .includes(filters.search.trim().toLowerCase());
+      const matchesType =
+        filters.type === "all" ||
+        transaction.transactionType.toLowerCase() === filters.type;
 
-    const matchesType =
-      filters.type === "all" || transaction.type === filters.type;
+      const matchesCategory =
+        filters.category === "all" || transaction.category === filters.category;
 
-    const matchesCategory =
-      filters.category === "all" || transaction.category === filters.category;
+      const matchesStartDate =
+        !filters.startDate || transaction.transactionDate >= filters.startDate;
 
-    const matchesStartDate =
-      !filters.startDate || transaction.date >= filters.startDate;
+      const matchesEndDate =
+        !filters.endDate || transaction.transactionDate <= filters.endDate;
 
-    const matchesEndDate =
-      !filters.endDate || transaction.date <= filters.endDate;
-
-    return (
-      matchesSearch &&
-      matchesType &&
-      matchesCategory &&
-      matchesStartDate &&
-      matchesEndDate
-    );
-  });
+      return (
+        matchesSearch &&
+        matchesType &&
+        matchesCategory &&
+        matchesStartDate &&
+        matchesEndDate
+      );
+    })
+    .sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
 
   return (
     <div className="transactions-page">
@@ -216,17 +246,35 @@ function Transactions() {
         onClearFilters={handleClearFilters}
       />
 
-      <TransactionTable
-        transactions={filteredTransactions}
-        onEdit={handleEditTransaction}
-        onDelete={handleDeleteTransaction}
-      />
+      {loading ? (
+        <div className="transactions-content">
+          <div className="transactions-placeholder">
+            <h3>Loading transactions...</h3>
+            <p>Please wait while we retrieve your transactions.</p>
+          </div>
+        </div>
+      ) : error ? (
+        <div className="transactions-content">
+          <div className="transactions-placeholder">
+            <h3>Unable to load transactions</h3>
+            <p>{error}</p>
+          </div>
+        </div>
+      ) : (
+        <TransactionTable
+          transactions={filteredTransactions}
+          onEdit={handleEditTransaction}
+          onDelete={handleDeleteTransaction}
+        />
+      )}
 
       {isFormOpen && (
         <TransactionForm
           initialData={selectedTransaction}
           onSubmit={handleSaveTransaction}
           onCancel={handleCloseForm}
+          isSubmitting={isSubmitting}
+          error={formError}
         />
       )}
 
@@ -235,6 +283,8 @@ function Transactions() {
           transaction={selectedTransaction}
           onConfirm={handleConfirmDelete}
           onCancel={handleCancelDelete}
+          isDeleting={isDeleting}
+          error={deleteError}
         />
       )}
     </div>

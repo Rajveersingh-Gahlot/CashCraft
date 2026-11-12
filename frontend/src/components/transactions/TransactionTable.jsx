@@ -12,7 +12,7 @@ const dateFormatter = new Intl.DateTimeFormat("en-IN", {
   year: "numeric",
 });
 
-function TransctionTable({ transactions, onEdit, onDelete }) {
+function TransactionTable({ transactions, onEdit, onDelete }) {
   if (transactions.length === 0) {
     return (
       <div className="transaction-empty-state">
@@ -22,6 +22,7 @@ function TransctionTable({ transactions, onEdit, onDelete }) {
       </div>
     );
   }
+
   return (
     <div className="transaction-table-container">
       <div className="transaction-table-header">
@@ -43,67 +44,74 @@ function TransctionTable({ transactions, onEdit, onDelete }) {
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
-            {transactions.map((transaction) => (
-              <tr key={transaction.id}>
-                <td>
-                  <div className="transaction-description">
-                    <span
-                      className={`transaction-category-icon ${transaction.type}`}
-                    >
-                      {transaction.category.charAt(0)}
+            {transactions.map((transaction) => {
+              const transactionType = transaction.transactionType.toLowerCase();
+
+              return (
+                <tr key={transaction.id}>
+                  <td>
+                    <div className="transaction-description">
+                      <span
+                        className={`transaction-category-icon ${transactionType}`}
+                      >
+                        {transaction.category.charAt(0)}
+                      </span>
+
+                      <span>{transaction.description}</span>
+                    </div>
+                  </td>
+
+                  <td>
+                    <span className="transaction-category">
+                      {transaction.category}
                     </span>
+                  </td>
 
-                    <span>{transaction.description}</span>
-                  </div>
-                </td>
-                <td>
-                  <span className="transaction-category">
-                    {transaction.category}
-                  </span>
-                </td>
+                  <td className="transaction-date">
+                    {dateFormatter.format(
+                      new Date(`${transaction.transactionDate}T00:00:00`),
+                    )}
+                  </td>
 
-                <td className="transaction-date">
-                  {dateFormatter.format(
-                    new Date(`${transaction.date}T00:00:00`),
-                  )}
-                </td>
+                  <td>
+                    <span className={`transaction-type ${transactionType}`}>
+                      {transaction.transactionType}
+                    </span>
+                  </td>
 
-                <td>
-                  <span className={`transaction-type ${transaction.type}`}>
-                    {transaction.type}
-                  </span>
-                </td>
+                  <td>
+                    <span className={`transaction-amount ${transactionType}`}>
+                      {transaction.transactionType === "EXPENSE" ? "-" : "+"}
+                      {currencyFormatter.format(transaction.amount)}
+                    </span>
+                  </td>
 
-                <td>
-                  <span className={`transaction-amount ${transaction.type}`}>
-                    {transaction.type === "expense" ? "-" : "+"}
-                    {currencyFormatter.format(transaction.amount)}
-                  </span>
-                </td>
-                <td>
-                  <div className="transaction-actions">
-                    <button
-                      type="button"
-                      className="edit-transaction-btn"
-                      onClick={() => onEdit?.(transaction)}
-                      aria-label={`Edit ${transaction.description}`}
-                    >
-                      Edit
-                    </button>
+                  <td>
+                    <div className="transaction-actions">
+                      <button
+                        type="button"
+                        className="edit-transaction-btn"
+                        onClick={() => onEdit?.(transaction)}
+                        aria-label={`Edit ${transaction.description}`}
+                      >
+                        Edit
+                      </button>
 
-                    <button
-                      type="button"
-                      className="delete-transaction-btn"
-                      onClick={() => onDelete?.(transaction)}
-                      aria-label={`Delete ${transaction.description}`}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                      <button
+                        type="button"
+                        className="delete-transaction-btn"
+                        onClick={() => onDelete?.(transaction)}
+                        aria-label={`Delete ${transaction.description}`}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -111,4 +119,4 @@ function TransctionTable({ transactions, onEdit, onDelete }) {
   );
 }
 
-export default TransctionTable;
+export default TransactionTable;
