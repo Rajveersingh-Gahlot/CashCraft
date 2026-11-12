@@ -1,49 +1,35 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getAllTransactions } from "../../services/transactionService";
 import "./RecentTransactions.css";
 
 function RecentTransactions() {
-  const transactions = [
-    {
-      id: 1,
-      title: "Monthly Salary",
-      category: "Salary",
-      date: "Nov 08, 2026",
-      amount: 45000,
-      type: "INCOME",
-    },
-    {
-      id: 2,
-      title: "Grocery Shopping",
-      category: "Food",
-      date: "Nov 07, 2026",
-      amount: 2500,
-      type: "EXPENSE",
-    },
-    {
-      id: 3,
-      title: "Electricity Bill",
-      category: "Utilities",
-      date: "Nov 06, 2026",
-      amount: 1800,
-      type: "EXPENSE",
-    },
-    {
-      id: 4,
-      title: "Freelance Project",
-      category: "Other Income",
-      date: "Nov 05, 2026",
-      amount: 8000,
-      type: "INCOME",
-    },
-    {
-      id: 5,
-      title: "Restaurant Dinner",
-      category: "Food",
-      date: "Nov 04, 2026",
-      amount: 1200,
-      type: "EXPENSE",
-    },
-  ];
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function fetchRecentTransactions() {
+      try {
+        const data = await getAllTransactions();
+
+        const sortedTransactions = [...data]
+          .sort(
+            (a, b) => new Date(b.transactionDate) - new Date(a.transactionDate),
+          )
+          .slice(0, 5);
+
+        setTransactions(sortedTransactions);
+      } catch (err) {
+        console.error("Failed to fetch recent transactions:", err);
+        setError("Unable to load recent transactions.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchRecentTransactions();
+  }, []);
 
   function formatCurrency(amount) {
     return new Intl.NumberFormat("en-IN", {
@@ -51,6 +37,14 @@ function RecentTransactions() {
       currency: "INR",
       maximumFractionDigits: 0,
     }).format(amount);
+  }
+
+  function formatDate(date) {
+    return new Date(date + "T00:00:00").toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
   }
 
   return (
@@ -66,49 +60,65 @@ function RecentTransactions() {
         </Link>
       </div>
 
-      <div className="recent-transactions-list">
-        {transactions.map((transaction) => (
-          <div className="transaction-row" key={transaction.id}>
-            <div className="transaction-info">
-              <div
-                className={`transaction-icon ${
-                  transaction.type === "INCOME" ? "income-icon" : "expense-icon"
-                }`}
-              >
-                {transaction.type === "INCOME" ? "↙" : "↗"}
+      {loading ? (
+        <p>Loading recent transactions...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : transactions.length === 0 ? (
+        <p>No transactions available yet.</p>
+      ) : (
+        <div className="recent-transactions-list">
+          {transactions.map((transaction) => (
+            <div className="transaction-row" key={transaction.id}>
+              <div className="transaction-info">
+                <div
+                  className={`transaction-icon ${
+                    transaction.transactionType === "INCOME"
+                      ? "income-icon"
+                      : "expense-icon"
+                  }`}
+                >
+                  {transaction.transactionType === "INCOME" ? "↙" : "↗"}
+                </div>
+
+                <div className="transaction-details">
+                  <h5>{transaction.description}</h5>
+                  <span>{transaction.category}</span>
+                </div>
               </div>
 
-              <div className="transaction-details">
-                <h5>{transaction.title}</h5>
-                <span>{transaction.category}</span>
+              <div className="transaction-date">
+                {formatDate(transaction.transactionDate)}
+              </div>
+
+              <div className="transaction-amount">
+                <span
+                  className={`transaction-type ${
+                    transaction.transactionType === "INCOME"
+                      ? "income-type"
+                      : "expense-type"
+                  }`}
+                >
+                  {transaction.transactionType === "INCOME"
+                    ? "Income"
+                    : "Expense"}
+                </span>
+
+                <strong
+                  className={
+                    transaction.transactionType === "INCOME"
+                      ? "income-amount"
+                      : "expense-amount"
+                  }
+                >
+                  {transaction.transactionType === "INCOME" ? "+" : "-"}
+                  {formatCurrency(transaction.amount)}
+                </strong>
               </div>
             </div>
-
-            <div className="transaction-date">{transaction.date}</div>
-
-            <div className="transaction-amount">
-              <span
-                className={`transaction-type ${
-                  transaction.type === "INCOME" ? "income-type" : "expense-type"
-                }`}
-              >
-                {transaction.type === "INCOME" ? "Income" : "Expense"}
-              </span>
-
-              <strong
-                className={
-                  transaction.type === "INCOME"
-                    ? "income-amount"
-                    : "expense-amount"
-                }
-              >
-                {transaction.type === "INCOME" ? "+" : "-"}
-                {formatCurrency(transaction.amount)}
-              </strong>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
