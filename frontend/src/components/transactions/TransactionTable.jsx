@@ -3,7 +3,8 @@ import "./TransactionTable.css";
 const currencyFormatter = new Intl.NumberFormat("en-IN", {
   style: "currency",
   currency: "INR",
-  maximumFractionDigits: 0,
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
 });
 
 const dateFormatter = new Intl.DateTimeFormat("en-IN", {

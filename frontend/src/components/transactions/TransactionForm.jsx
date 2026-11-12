@@ -145,7 +145,10 @@ function TransactionForm({
                 onChange={handleChange}
                 required
               >
-                <option value="">Select category</option>
+                <option value="" disabled>
+                  Select category
+                </option>
+
                 {availableCategories.map((category) => (
                   <option key={category} value={category}>
                     {category}

@@ -6,20 +6,22 @@ import SummaryCards from "../../components/dashboard/SummaryCards";
 import "./Dashboard.css";
 
 function Dashboard() {
+  const storedUser = sessionStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  const userName = user?.name?.trim().split(" ")[0] || "there";
+
   return (
     <div className="dashboard">
       {/* Dashboard introduction */}
       <div className="dashboard-intro">
-        <div>
+        <div className="dashboard-welcome">
           <span className="dashboard-eyebrow">FINANCIAL OVERVIEW</span>
 
-          <h2>Welcome back!</h2>
-          <p>Here's what's happening with your finances.</p>
-        </div>
+          <h2>
+            Welcome back, <span className="welcome-user-name">{userName}</span>!
+          </h2>
 
-        <div className="dashboard-date">
-          <span>YOUR FINANCES</span>
-          <strong>Overview</strong>
+          <p>Here's what's happening with your finances.</p>
         </div>
       </div>
 
@@ -51,6 +53,7 @@ function Dashboard() {
             <p>Track how your finances change over time.</p>
           </div>
         </div>
+
         <MonthlyTrend />
       </section>
 
