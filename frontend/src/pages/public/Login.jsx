@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
+
 import { loginUser } from "../../services/authService";
+import { useToast } from "../../context/ToastContext";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -10,6 +12,7 @@ function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -24,10 +27,10 @@ function Login() {
 
       const response = await loginUser(credentials);
 
-      // Store JWT token for authenticated API requests
+      // Store JWT token for authenticated API requests.
       sessionStorage.setItem("token", response.token);
 
-      // Store logged-in user information
+      // Store logged-in user information.
       sessionStorage.setItem(
         "user",
         JSON.stringify({
@@ -37,22 +40,16 @@ function Login() {
         }),
       );
 
-      console.log("Login successful:", {
-        id: response.id,
-        name: response.name,
-        email: response.email,
-      });
+      showToast("Login successful! Welcome back.", "success");
 
-      alert("Login successful!");
-
-      // Replace Login history entry with Dashboard
+      // Replace Login history entry with Dashboard.
       navigate("/dashboard", { replace: true });
     } catch (error) {
       const message =
         error.response?.data?.message ||
         "Login failed. Please check your credentials.";
 
-      alert(message);
+      showToast(message, "error");
     } finally {
       setIsSubmitting(false);
     }

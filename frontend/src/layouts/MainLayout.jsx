@@ -1,10 +1,12 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import { useToast } from "../context/ToastContext";
 import "../App.css";
 
 function MainLayout() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const activePage = location.pathname.split("/")[1];
 
@@ -26,9 +28,14 @@ function MainLayout() {
   }
 
   function handleLogout() {
+    // Remove authentication data from the browser session.
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("user");
 
+    // Display logout confirmation.
+    showToast("You have been logged out successfully.", "success");
+
+    // Redirect the user to the login page.
     navigate("/login", { replace: true });
   }
 

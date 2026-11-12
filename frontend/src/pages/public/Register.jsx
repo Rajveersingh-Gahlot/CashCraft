@@ -1,10 +1,14 @@
 import { useNavigate, Link } from "react-router-dom";
-import { registerUser } from "../../services/authService";
 import { useState } from "react";
 import "./Register.css";
 
+import { registerUser } from "../../services/authService";
+import { useToast } from "../../context/ToastContext";
+
 function Register() {
   const navigate = useNavigate();
+  const { showToast } = useToast();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [name, setName] = useState("");
@@ -19,7 +23,7 @@ function Register() {
     event.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match.");
+      showToast("Passwords do not match.", "warning");
       return;
     }
 
@@ -32,11 +36,9 @@ function Register() {
         password,
       };
 
-      const response = await registerUser(userData);
+      await registerUser(userData);
 
-      console.log("Registration successful:", response);
-
-      alert("Account created successfully! Please log in.");
+      showToast("Account created successfully! Please log in.", "success");
 
       navigate("/login", { replace: true });
     } catch (error) {
@@ -44,7 +46,7 @@ function Register() {
         error.response?.data?.message ||
         "Registration failed. Please try again.";
 
-      alert(message);
+      showToast(message, "error");
     } finally {
       setIsSubmitting(false);
     }

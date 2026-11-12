@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
+
 import TransactionFilters from "../../components/transactions/TransactionFilters";
 import TransactionTable from "../../components/transactions/TransactionTable";
 import TransactionForm from "../../components/transactions/TransactionForm";
 import DeleteConfirmation from "../../components/transactions/DeleteConfirmation";
+
 import {
   getAllTransactions,
   createTransaction,
   updateTransaction,
   deleteTransaction,
 } from "../../services/transactionService";
+
+import { useToast } from "../../context/ToastContext";
+
 import "./Transactions.css";
 
 const initialFilters = {
@@ -20,6 +25,8 @@ const initialFilters = {
 };
 
 function Transactions() {
+  const { showToast } = useToast();
+
   const [transactions, setTransactions] = useState([]);
   const [filters, setFilters] = useState({ ...initialFilters });
 
@@ -120,6 +127,8 @@ function Transactions() {
               : transaction,
           ),
         );
+
+        showToast("Transaction updated successfully!", "success");
       } else {
         const createdTransaction = await createTransaction(transactionData);
 
@@ -127,6 +136,8 @@ function Transactions() {
           createdTransaction,
           ...previousTransactions,
         ]);
+
+        showToast("Transaction added successfully!", "success");
       }
 
       setIsFormOpen(false);
@@ -181,6 +192,8 @@ function Transactions() {
 
       setIsDeleteDialogOpen(false);
       setSelectedTransaction(null);
+
+      showToast("Transaction deleted successfully!", "success");
     } catch (err) {
       console.error("Failed to delete transaction:", err);
 
