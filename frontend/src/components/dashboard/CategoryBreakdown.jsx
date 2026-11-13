@@ -1,4 +1,4 @@
-import { ResponsiveContainer, PieChart, Pie, Tooltip } from "recharts";
+import { ResponsiveContainer, PieChart, Pie, Tooltip, Cell } from "recharts";
 
 import { useEffect, useState } from "react";
 
@@ -6,26 +6,34 @@ import "./CategoryBreakdown.css";
 import { getCategorySummary } from "../../services/dashboardService";
 
 const categoryColors = {
-  Food: "#00e5ff",
-  Shopping: "#a855f7",
-  Transport: "#3b82f6",
-  Transportation: "#3b82f6",
-  Bills: "#f59e0b",
-  Entertainment: "#10b981",
-  Rent: "#ec4899",
-  Education: "#8b5cf6",
-  Healthcare: "#14b8a6",
-  Salary: "#22c55e",
-  Freelance: "#f97316",
+  Food: "#00E5FF",
+  Groceries: "#F97316",
+  "Food & Groceries": "#F97316",
+  Shopping: "#A855F7",
+  Transport: "#3B82F6",
+  Transportation: "#2563EB",
+  Bills: "#F59E0B",
+  Entertainment: "#10B981",
+  Rent: "#EC4899",
+  Education: "#8B5CF6",
+  Healthcare: "#14B8A6",
+  Salary: "#22C55E",
+  Freelance: "#F97316",
 };
 
 const fallbackColors = [
-  "#00e5ff",
-  "#a855f7",
-  "#3b82f6",
-  "#f59e0b",
-  "#10b981",
-  "#ec4899",
+  "#00E5FF",
+  "#A855F7",
+  "#3B82F6",
+  "#F59E0B",
+  "#10B981",
+  "#EC4899",
+  "#8B5CF6",
+  "#14B8A6",
+  "#F97316",
+  "#84CC16",
+  "#6366F1",
+  "#E879F9",
 ];
 
 function CategoryBreakdown() {
@@ -113,7 +121,11 @@ function CategoryBreakdown() {
                   outerRadius="88%"
                   paddingAngle={3}
                   stroke="none"
-                />
+                >
+                  {categoryData.map((item) => (
+                    <Cell key={item.category} fill={item.fill} />
+                  ))}
+                </Pie>
 
                 <Tooltip
                   formatter={(value, name) => [
