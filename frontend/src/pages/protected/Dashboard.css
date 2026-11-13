@@ -1,11 +1,11 @@
 .dashboard {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 30px;
   width: 100%;
+  min-width: 0;
 }
 
-/* Dashboard introduction */
 .dashboard-intro {
   position: relative;
   overflow: hidden;
@@ -21,7 +21,7 @@
       transparent 55%
     ),
     var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-primary);
   border-radius: var(--radius-lg);
 }
 
@@ -68,11 +68,11 @@
   line-height: 1.6;
 }
 
-/* Common section styles */
 .dashboard-section {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
 }
 
 .section-heading h3 {
@@ -88,21 +88,19 @@
   margin: 0;
 }
 
-/* Summary cards layout */
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
 
-/* Analysis layout */
 .analysis-grid {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
   gap: 16px;
+  min-width: 0;
 }
 
-/* Temporary dashboard section containers */
 .dashboard-placeholder {
   display: flex;
   flex-direction: column;
@@ -111,7 +109,7 @@
   min-width: 0;
   padding: 22px;
   background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-primary);
   border-radius: var(--radius-lg);
 }
 
@@ -150,7 +148,6 @@
   min-height: 130px;
 }
 
-/* Responsive layout */
 @media (max-width: 900px) {
   .summary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -163,7 +160,7 @@
 
 @media (max-width: 600px) {
   .dashboard {
-    gap: 26px;
+    gap: 24px;
   }
 
   .dashboard-intro {

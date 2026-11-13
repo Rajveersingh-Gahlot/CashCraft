@@ -4,12 +4,11 @@
   padding: 24px;
   min-width: 0;
   background: linear-gradient(135deg, #111c32 0%, #0c1426 65%, #15152e 100%);
-  border: 1px solid rgba(34, 211, 238, 0.18);
-  border-radius: 18px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
 }
 
-/* Subtle cyber accent */
 .recent-transactions::before {
   content: "";
   position: absolute;
@@ -24,7 +23,7 @@
     #8b5cf6,
     transparent
   );
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 .recent-transactions-header {
@@ -36,14 +35,14 @@
 }
 
 .recent-transactions-header h4 {
-  color: #f1f5f9;
+  color: var(--text-primary);
   font-size: 16px;
   font-weight: 700;
   margin: 0 0 7px;
 }
 
 .recent-transactions-header p {
-  color: #8294b2;
+  color: var(--text-secondary);
   font-size: 12px;
   margin: 0;
 }
@@ -52,26 +51,22 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  color: #22d3ee;
+  color: var(--accent-cyan);
   font-size: 12px;
   font-weight: 650;
   text-decoration: none;
   white-space: nowrap;
-  transition:
-    color 0.2s ease,
-    gap 0.2s ease;
+  transition: color var(--transition-base);
 }
 
 .view-all-link:hover {
   color: #a5f3fc;
-  gap: 11px;
 }
 
 .view-all-link span {
   font-size: 17px;
 }
 
-/* Transaction rows */
 .recent-transactions-list {
   display: flex;
   flex-direction: column;
@@ -89,8 +84,8 @@
   border-bottom: 1px solid rgba(100, 116, 139, 0.15);
   border-radius: 10px;
   transition:
-    background 0.2s ease,
-    border-color 0.2s ease;
+    background var(--transition-base),
+    border-color var(--transition-base);
 }
 
 .transaction-row:hover {
@@ -102,7 +97,6 @@
   border-bottom: none;
 }
 
-/* Transaction identity */
 .transaction-info {
   display: flex;
   align-items: center;
@@ -120,35 +114,18 @@
   border-radius: 13px;
   font-size: 23px;
   font-weight: 700;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.transaction-row:hover .transaction-icon {
-  transform: translateY(-2px);
 }
 
 .income-icon {
   color: #34d399;
-  background: linear-gradient(
-    145deg,
-    rgba(16, 185, 129, 0.2),
-    rgba(16, 185, 129, 0.07)
-  );
+  background: rgba(16, 185, 129, 0.12);
   border: 1px solid rgba(52, 211, 153, 0.22);
-  box-shadow: 0 0 16px rgba(52, 211, 153, 0.08);
 }
 
 .expense-icon {
   color: #fb7185;
-  background: linear-gradient(
-    145deg,
-    rgba(244, 63, 94, 0.2),
-    rgba(244, 63, 94, 0.07)
-  );
+  background: rgba(244, 63, 94, 0.12);
   border: 1px solid rgba(251, 113, 133, 0.22);
-  box-shadow: 0 0 16px rgba(251, 113, 133, 0.07);
 }
 
 .transaction-details {
@@ -166,17 +143,15 @@
 }
 
 .transaction-details span {
-  color: #8294b2;
+  color: var(--text-secondary);
   font-size: 11px;
 }
 
-/* Date */
 .transaction-date {
   color: #a1b0c8;
   font-size: 12px;
 }
 
-/* Amount and type */
 .transaction-amount {
   display: flex;
   flex-direction: column;
@@ -219,7 +194,6 @@
   color: #fb7185;
 }
 
-/* Responsive layout */
 @media (max-width: 650px) {
   .recent-transactions {
     padding: 18px;
@@ -231,7 +205,7 @@
     padding: 14px 5px;
   }
 
-  .transaction-date {
+  .transaction-row .transaction-date {
     display: none;
   }
 }

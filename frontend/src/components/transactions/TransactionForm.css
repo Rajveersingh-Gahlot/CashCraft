@@ -6,6 +6,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
+  overflow-y: auto;
   background: rgba(3, 8, 20, 0.78);
   backdrop-filter: blur(7px);
 }
@@ -13,12 +14,13 @@
 .transaction-form-modal {
   width: 100%;
   max-width: 540px;
-  max-height: 90vh;
+  max-height: calc(100vh - 40px);
   overflow-y: auto;
-  background: #111c30;
+  margin: auto;
+  background: var(--bg-secondary);
   border: 1px solid #30415c;
   border-radius: 16px;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-elevated);
 }
 
 .transaction-form-header {
@@ -26,11 +28,11 @@
   justify-content: space-between;
   align-items: flex-start;
   padding: 25px;
-  border-bottom: 1px solid #26364f;
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .form-eyebrow {
-  color: #35d5ed;
+  color: var(--accent-cyan);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -38,13 +40,13 @@
 
 .transaction-form-header h2 {
   margin: 9px 0 6px;
-  color: #f1f5fb;
+  color: var(--text-primary);
   font-size: 22px;
 }
 
 .transaction-form-header p {
   margin: 0;
-  color: #91a0b8;
+  color: var(--text-secondary);
   font-size: 13px;
 }
 
@@ -53,15 +55,18 @@
   height: 32px;
   border: none;
   border-radius: 8px;
-  background: #1b2a42;
+  background: var(--bg-tertiary);
   color: #b9c6d8;
   font-size: 23px;
   cursor: pointer;
+  transition:
+    background var(--transition-base),
+    color var(--transition-base);
 }
 
 .form-close-btn:hover {
   background: #293b56;
-  color: #ffffff;
+  color: white;
 }
 
 .transaction-form-body {
@@ -75,6 +80,7 @@
   display: flex;
   flex-direction: column;
   gap: 9px;
+  min-width: 0;
 }
 
 .form-field label {
@@ -87,16 +93,18 @@
 .form-field select {
   width: 100%;
   min-width: 0;
-  box-sizing: border-box;
   padding: 12px 13px;
   border: 1px solid #30415c;
   border-radius: 8px;
   outline: none;
-  background: #0b1425;
+  background: var(--bg-primary);
   color: #eaf1fa;
   font: inherit;
   font-size: 13px;
   color-scheme: dark;
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .form-field input::placeholder {
@@ -105,7 +113,7 @@
 
 .form-field input:focus,
 .form-field select:focus {
-  border-color: #35d5ed;
+  border-color: var(--accent-cyan);
   box-shadow: 0 0 0 3px rgba(53, 213, 237, 0.1);
 }
 
@@ -114,7 +122,7 @@
   justify-content: flex-end;
   gap: 12px;
   padding: 18px 25px;
-  border-top: 1px solid #26364f;
+  border-top: 1px solid var(--border-primary);
 }
 
 .transaction-form-footer button {
@@ -123,6 +131,9 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+  transition:
+    background var(--transition-base),
+    border-color var(--transition-base);
 }
 
 .form-cancel-btn {
@@ -132,20 +143,24 @@
 }
 
 .form-cancel-btn:hover {
-  background: #1b2a42;
+  background: var(--bg-tertiary);
 }
 
 .form-submit-btn {
   border: 1px solid #24bcd5;
   background: linear-gradient(135deg, #19b9d2, #477de8);
-  color: #ffffff;
+  color: white;
 }
 
 .form-submit-btn:hover {
-  filter: brightness(1.1);
+  filter: brightness(1.06);
 }
 
 @media (max-width: 550px) {
+  .transaction-form-modal {
+    max-height: calc(100vh - 24px);
+  }
+
   .transaction-form-body {
     grid-template-columns: 1fr;
     gap: 16px;

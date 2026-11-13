@@ -5,15 +5,11 @@
   background: var(--bg-primary);
 }
 
-/* Main content */
-
 .app-main {
   flex: 1;
   min-width: 0;
   padding: 32px 38px;
 }
-
-/* Header */
 
 .app-header {
   display: flex;
@@ -24,6 +20,7 @@
 }
 
 .app-header h1 {
+  color: var(--text-primary);
   font-size: var(--font-2xl);
   font-weight: 700;
   letter-spacing: -0.5px;
@@ -56,10 +53,10 @@
   box-shadow: var(--glow-cyan);
 }
 
-/* Temporary page content */
-
 .page-content {
   width: 100%;
+  min-width: 0;
+  animation: page-enter 0.25s ease both;
 }
 
 .welcome-card {
@@ -97,19 +94,40 @@
   line-height: 1.7;
 }
 
-/* Responsive layout */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .app-main {
+    padding: 28px 24px;
+  }
+}
 
 @media (max-width: 720px) {
   .app-main {
-    padding: 24px 18px;
+    padding: 22px 18px;
   }
 
   .app-header {
     align-items: flex-start;
     flex-direction: column;
+    margin-bottom: 26px;
   }
 
   .welcome-card {
     padding: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-main {
+    padding: 18px 14px;
   }
 }

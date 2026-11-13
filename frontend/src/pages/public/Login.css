@@ -1,4 +1,3 @@
-
 .login-page {
   min-height: 100vh;
   display: flex;
@@ -13,7 +12,7 @@
     ),
     radial-gradient(
       circle at 85% 80%,
-      rgba(168, 85, 247, 0.10),
+      rgba(168, 85, 247, 0.1),
       transparent 35%
     ),
     var(--bg-primary);
@@ -23,11 +22,10 @@
   width: 100%;
   max-width: 440px;
   padding: 42px;
-  background: rgba(17, 24, 43, 0.92);
-  border: 1px solid var(--border-color);
+  background: rgba(17, 24, 43, 0.96);
+  border: 1px solid var(--border-primary);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg);
-  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-elevated);
 }
 
 .login-brand {
@@ -49,11 +47,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  background: linear-gradient(
-    135deg,
-    var(--accent-cyan),
-    var(--accent-blue)
-  );
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
   color: var(--bg-primary);
   font-size: 24px;
   font-weight: 800;
@@ -101,14 +95,16 @@
   width: 100%;
   height: 48px;
   padding: 0 15px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-primary);
   border-radius: var(--radius-md);
   outline: none;
   background: var(--bg-tertiary);
   color: var(--text-primary);
   font-family: inherit;
   font-size: 14px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .form-group input::placeholder {
@@ -117,7 +113,7 @@
 
 .form-group input:focus {
   border-color: var(--accent-cyan);
-  box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.10);
+  box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1);
 }
 
 .password-label-row {
@@ -132,7 +128,7 @@
   font-size: 12px;
   font-weight: 600;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color var(--transition-base);
 }
 
 .password-label-row a:hover,
@@ -172,32 +168,30 @@
   margin-top: 4px;
   border: none;
   border-radius: var(--radius-md);
-  background: linear-gradient(
-    100deg,
-    var(--accent-cyan),
-    var(--accent-blue)
-  );
+  background: linear-gradient(100deg, var(--accent-cyan), var(--accent-blue));
   color: var(--bg-primary);
   font-family: inherit;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    box-shadow var(--transition-base),
+    filter var(--transition-base);
 }
 
 .login-submit:hover {
-  transform: translateY(-2px);
   box-shadow: var(--glow-cyan);
+  filter: brightness(1.05);
 }
 
 .login-submit:active {
-  transform: translateY(0);
+  filter: brightness(0.96);
 }
 
 .login-footer {
   margin-top: 30px;
   padding-top: 24px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-primary);
   text-align: center;
 }
 

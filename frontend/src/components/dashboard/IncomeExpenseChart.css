@@ -1,4 +1,3 @@
-
 .income-expense-chart {
   display: flex;
   flex-direction: column;
@@ -6,7 +5,7 @@
   min-width: 0;
   padding: 22px;
   background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-primary);
   border-radius: var(--radius-lg);
 }
 

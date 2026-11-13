@@ -4,8 +4,8 @@
   gap: 14px;
   align-items: end;
   padding: 22px;
-  background: #111c30;
-  border: 1px solid #26364f;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
   border-radius: 14px;
 }
 
@@ -19,7 +19,7 @@
 
 .filter-search label,
 .filter-group label {
-  color: #a8b6cc;
+  color: var(--text-secondary);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
@@ -29,28 +29,29 @@
 .filter-group input,
 .filter-group select {
   width: 100%;
+  min-width: 0;
   height: 42px;
   padding: 0 12px;
-  background: #0b1425;
+  background: var(--bg-primary);
   border: 1px solid #30415c;
   border-radius: 8px;
-  color: #e2e8f0;
+  color: var(--text-primary);
   font-size: 13px;
   outline: none;
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
   color-scheme: dark;
 }
 
 .filter-search input::placeholder {
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .filter-search input:focus,
 .filter-group input:focus,
 .filter-group select:focus {
-  border-color: #22d3ee;
+  border-color: var(--accent-cyan);
   box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
 }
 
@@ -70,8 +71,8 @@
   white-space: nowrap;
   cursor: pointer;
   transition:
-    background 0.2s ease,
-    border-color 0.2s ease;
+    background var(--transition-base),
+    border-color var(--transition-base);
 }
 
 .clear-filters-btn:hover {
@@ -101,5 +102,16 @@
 
   .clear-filters-btn {
     grid-column: span 2;
+  }
+}
+
+@media (max-width: 380px) {
+  .transaction-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-search,
+  .clear-filters-btn {
+    grid-column: auto;
   }
 }
