@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import "./Sidebar.css";
 
+const MOBILE_BREAKPOINT = "(max-width: 720px)";
+
 function Sidebar({ activePage, onNavigate, onLogout }) {
-  const [isCollapsed, setCollapsed] = useState(false);
+  const [isCollapsed, setCollapsed] = useState(
+    () => window.matchMedia(MOBILE_BREAKPOINT).matches,
+  );
+
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
 
   const navigationItems = [
@@ -32,8 +37,28 @@ function Sidebar({ activePage, onNavigate, onLogout }) {
 
   function handleNavigation(page) {
     onNavigate(page);
+
+    if (window.matchMedia(MOBILE_BREAKPOINT).matches) {
+      setCollapsed(true);
+    }
   }
 
+  // Keep sidebar behavior synchronized with viewport size.
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(MOBILE_BREAKPOINT);
+
+    function handleViewportChange(event) {
+      setCollapsed(event.matches);
+    }
+
+    mediaQuery.addEventListener("change", handleViewportChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleViewportChange);
+    };
+  }, []);
+
+  // Close logout confirmation when Escape is pressed.
   useEffect(() => {
     function handleEscapeKey(event) {
       if (event.key === "Escape") {
